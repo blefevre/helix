@@ -82,8 +82,13 @@ FLAGS:
             env!("CARGO_PKG_DESCRIPTION"),
             helix_loader::default_log_file().display(),
         );
-        std::process::exit(0);
     }
+
+    let mut args = Args::parse_args().context("could not parse arguments")?;
+
+    helix_loader::initialize_config_file(args.config_file.clone());
+    helix_loader::initialize_log_file(args.log_file.clone());
+    helix_core::config::initialize_enable_copilot(args.enable_copilot);
 
     if args.display_version {
         println!("helix {}", VERSION_AND_GIT_HASH);
