@@ -14,3 +14,23 @@ Typable commands are used from command mode and may take arguments. Command mode
 Static commands take no arguments and can be bound to keys. Static commands can also be executed from the command picker (`<space>?`). The built-in static commands are:
 
 {{#include ./generated/static-cmd.md}}
+
+## Using variables in typed commands and mapped shortcuts
+Helix provides several variables that can be used when typing commands or creating custom shortcuts. These variables are listed below:
+
+| Variable        | Description |
+| ---             | ---                      |
+| `%{basename}`   | The name and extension of the currently focused file. |
+| `%{filename}`   | The absolute path of the currently focused file. |
+| `%{dirname}`    | The absolute path of the parent directory of the currently focused file. |
+| `%{cwd}`        | The absolute path of the current working directory of Helix. |
+| `%{linenumber}` | The line number where the primary cursor is positioned. |
+| `%{selection}`  | The text selected by the primary cursor. |
+| `%sh{cmd}`      | Executes `cmd` with the default shell and returns the command output, if any. |
+
+### Example
+```toml
+[keys.normal]
+# Print blame info for the line where the main cursor is.
+C-b = ":echo %sh{git blame -L %{linenumber} %{filename}}"
+```
